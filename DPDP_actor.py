@@ -24,6 +24,7 @@ class Actor:
 
         self.build_model()
 
+
     def build_model(self):
         """Build an actor (policy) network that maps states -> actions."""
         # Define input layer (states)
@@ -31,12 +32,28 @@ class Actor:
 
         # Add hidden layers
         net = layers.Dense(units=32, activation='relu')(states)
+        net = layers.BatchNormalization()(net)
+        net = layers.Dropout(0.5)(net)
+
         net = layers.Dense(units=64, activation='relu')(net)
+        net = layers.BatchNormalization()(net)
+        net = layers.Dropout(0.5)(net)
+
+        net = layers.Dense(units=128, activation='relu')(net)
+        net = layers.BatchNormalization()(net)
+        net = layers.Dropout(0.5)(net)
+
+        net = layers.Dense(units=64, activation='relu')(net)
+        net = layers.BatchNormalization()(net)
+        net = layers.Dropout(0.5)(net)
+
         net = layers.Dense(units=32, activation='relu')(net)
+        net = layers.BatchNormalization()(net)
+        net = layers.Dropout(0.5)(net)
 
         # Try different layer sizes, activations, add batch normalization, regularizers, etc.
 
-        # Add final output layer with sigmoid activation
+         # Add final output layer with sigmoid activation
         raw_actions = layers.Dense(units=self.action_size, activation='sigmoid',
             name='raw_actions')(net)
 

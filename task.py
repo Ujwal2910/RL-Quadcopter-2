@@ -28,15 +28,15 @@ class Task():
 
     def get_reward(self):
         """Uses current pose of sim to return reward."""
-        reward = 1.-.3*(abs(self.sim.pose[:3] - self.target_pos)).sum()
+        reward = 1.-.2*(abs(self.sim.pose[:3] - self.target_pos)).sum()
 
         #reward = n(if reward> 1 n =1 else if reward < -1 n = -1)
-        n=0
+        #n=0
         if reward >1:
-            n = 1
+            reward = 1
         if reward < -1:
-            n = -1
-        reward = n
+            reward = -1
+        #reward = n
         return reward
 
     def step(self, rotor_speeds):
