@@ -53,7 +53,7 @@ class Critic:
 
         net_actions = layers.Dense(units=128, activation='relu')(net_actions)
         net_actions = layers.BatchNormalization()(net_actions)
-        net_actions = layers.Dropout(0.5)(net_actions)
+        net_actions = layers.Dropout(0.7)(net_actions)
 
         net_actions = layers.Dense(units=32, activation='relu')(net_actions)
         net_actions = layers.BatchNormalization()(net_actions)

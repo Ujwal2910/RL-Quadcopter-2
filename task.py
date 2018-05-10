@@ -30,8 +30,6 @@ class Task():
         """Uses current pose of sim to return reward."""
         reward = 0.
         reward += self.sim.v[2]
-
-
         #reward = n(if reward> 1 n =1 else if reward < -1 n = -1)
         #n=0
         #debug below
@@ -42,8 +40,31 @@ class Task():
             reward = -1
         #reward = n
         '''
-
-        reward -= (abs(self.sim.pose[:2] - self.target_pos[:2])).sum()/2
+        ## xy plane reward
+        xy = 0
+        xy = 1 -2*(abs(self.sim.pose[:2] - self.target_pos[:2])).sum()
+        ## angular vel reward
+        ang = 0
+        ang = 1- 2*(abs(self.sim.angular_v[:3])).sum()
+        #reward for relative target and start position
+        posi = 0
+        posi = 1 -2*(abs(self.sim.pose[2] - self.target_pos[2]))
+        
+        if xy >1:
+            reward -=1
+        elif xy < -1:
+            reward +=1
+            
+        if ang >1:
+            reward -=1
+        elif ang <-1:
+            reward +=1
+            
+        if posi >1:
+            reward -=1
+        elif posi < -1:
+            reward +=1
+        
         return reward
 
     def step(self, rotor_speeds):
@@ -56,8 +77,9 @@ class Task():
             pose_all.append(self.sim.pose)
 
             if(self.sim.pose[2] > self.target_pos[2]):
-                reward += 10
+                reward += 200
                 done = True
+                
         next_state = np.concatenate(pose_all)
 
         return next_state, reward, done
